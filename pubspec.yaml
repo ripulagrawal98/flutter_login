@@ -34,7 +34,7 @@ flutter:
 
     - family: Lobster
       fonts:
-        - asset: fonts/Lobster-Regular.ttf
+        -  asset: fonts/Lobster-Regular.ttf
 
 
 
