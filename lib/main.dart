@@ -15,18 +15,9 @@ class MyApp extends StatelessWidget {
           title: Text("Login Page"),
         ),
       body: SafeArea(
+
         child: Column(
           children: <Widget>[
-            Text(
-              "Authorization Page",
-              style: TextStyle(
-                fontFamily: 'LexendZetta',
-                fontSize: 25.0,
-                fontWeight: FontWeight.w800,
-                fontStyle: FontStyle.italic,
-              ),
-
-            ),
             SizedBox(
               height: 20.0,
               child: Divider(
@@ -85,6 +76,36 @@ class MyApp extends StatelessWidget {
                   ),
                 ],
 
+              ),
+            ),
+            FlatButton(
+              onPressed: (){ },
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              child: Text(
+                "Log In",
+                style: TextStyle(
+                  fontFamily: "Lobster",
+                  fontSize: 20.0,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+            FlatButton(
+              onPressed: (){ },
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)
+              ),
+              child: Text(
+                "Sign Up",
+                style: TextStyle(
+                  fontFamily: "Lobster",
+                  fontSize: 20.0,
+                  fontStyle: FontStyle.italic,
+                ),
               ),
             ),
           ],
