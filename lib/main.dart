@@ -236,8 +236,18 @@ class SecondScreen extends StatelessWidget {
                       Navigator.pushNamed(context, '/second');
                       // Navigate back to first screen when tapped.
                     },
-                    child: Text('Take Token'),
+                    child: Text('Take Token',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      letterSpacing: 0.5,
+                      fontFamily: "SourceSansPro"
+                    ),
+                    ),
+
                     color: Colors.yellow,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0)
+                    ),
                   ),
                   SizedBox(
                     width: 20.0,
@@ -248,10 +258,41 @@ class SecondScreen extends StatelessWidget {
                       Navigator.pushNamed(context, '/second');
                       // Navigate back to first screen when tapped.
                     },
-                    child: Text('Book Appointment'),
+                    child: Text('Book Appointment',
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          letterSpacing: 0.5,
+                          fontFamily: "SourceSansPro"
+                      ),
+                    ),
                     color: Colors.yellow,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0)
+                    ),
                   ),
                 ],
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Card(
+                color: Colors.white70,
+                margin: EdgeInsets.all(20.0),
+                child: Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Text(
+                    "Advertisement Zone",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontFamily: "Lexend Zetta",
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.05,
+                    ),
+                  ),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)
+                ),
               )
 
 
