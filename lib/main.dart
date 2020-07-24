@@ -1,6 +1,8 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -12,7 +14,7 @@ void main() {
 //      // When navigating to the "/second" route, build the SecondScreen widget.
 //      '/second': (context) => FirstScreen(),
 //    },
-    home: Dashboard(0, 20),
+    home: Dashboard(0, 20, 10, 50),
 //    home: UpdateDashboard(),
   ));
 }
@@ -126,31 +128,35 @@ class FirstScreen extends StatelessWidget {
 
 class Dashboard extends StatefulWidget {
   final dynamic active;
-  final dynamic maxium;
+  final maxium;
+  final dynamic waiting_list;
+  final dynamic waiting_time;
 
-  Dashboard(this.active, this.maxium);
+  Dashboard(this.active, this.maxium, this.waiting_list, this.waiting_time);
 
   @override
-  _DashboardState createState() => _DashboardState(active, maxium);
+  _DashboardState createState() =>
+      _DashboardState(active, maxium, waiting_list, waiting_time);
 }
 
 class _DashboardState extends State<Dashboard> {
-  dynamic active, maxium;
+  dynamic active, waiting_list, waiting_time;
+  dynamic maxium;
 
-  _DashboardState(this.active, this.maxium);
+  _DashboardState(
+      this.active, this.maxium, this.waiting_list, this.waiting_time);
 
-  int active_patients = 12;
-  int max_patients = 15;
-
+//  dynamic active_patients = 12;
+//  int max_patients = 15;
+//
 //  final int active;
 
-
-  void UpdateText() {
-    setState(() {
-      active_patients = active;
-      max_patients = maxium;
-    });
-  }
+//  void UpdateText() {
+//    setState(() {
+//      active_patients = active;
+//      max_patients = maxium;
+//    });
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -225,13 +231,26 @@ class _DashboardState extends State<Dashboard> {
                         height: 10.0,
                       ),
                       Text(
-                        "Waiting List",
+                        "Waiting : $waiting_list",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: "SourceSansPro",
                           fontSize: 25.0,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white70,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Text(
+                        "Your turn in next $waiting_time minutes",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: "SourceSansPro",
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
                         ),
                       )
                     ],
@@ -249,7 +268,7 @@ class _DashboardState extends State<Dashboard> {
                 children: <Widget>[
                   RaisedButton(
                     onPressed: () {
-                      UpdateText();
+//                      UpdateText();
                       //Navigator.pop(context);
 //                      Navigator.pushNamed(context, '/second');
                       // Navigate back to first screen when tapped.
@@ -345,76 +364,116 @@ class _UpdateDashboardState extends State<UpdateDashboard> {
 
   final active_controller = TextEditingController();
   final max_controller = TextEditingController();
+  final waiting_controller = TextEditingController();
+  final wait_time_controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+
         backgroundColor: Colors.lightBlueAccent,
         body: SafeArea(
-          child: Card(
-            color: Colors.lightBlueAccent,
-//            margin:EdgeInsets.symmetric(vertical: 20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image(
-                  alignment: Alignment.center,
-                  image: AssetImage("images/doodle.png"),
-                ),
-                TextFormField(
-                  controller: active_controller,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0)
-                    ),
-                    hintText: "Active no of Clients",
-                    fillColor: Colors.teal,
-                  ),
-                  keyboardType: TextInputType.number,
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                TextFormField(
-                  controller: max_controller,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0)
-                    ),
-                    hintText: "Capacity of Clinic",
-                    fillColor: Colors.teal,
-                  ),
-                  keyboardType: TextInputType.number,
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                RaisedButton(
-                  onPressed: () {
-                    dynamic active = active_controller.text;
-                    dynamic maxium = max_controller.text;
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Dashboard(active, maxium)),
-                    );
-//                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    'Update Dashboard',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        letterSpacing: 0.5,
-                        fontFamily: "SourceSansPro"),
-                  ),
-                  color: Colors.yellowAccent,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
-                ),
+          child: ListView(
+            children: <Widget>[
+              Card(
+                color: Colors.lightBlueAccent,
 
-              ],
-            ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Image(
+                      alignment: Alignment.center,
+                      image: AssetImage("images/doodle.png"),
+                    ),
+                    TextFormField(
+                      controller: active_controller,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0)
+                        ),
+                        hintText: "Active no of Clients",
+                        fillColor: Colors.teal,
+                      ),
+                      keyboardType: TextInputType.number,
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    TextFormField(
+                      controller: max_controller,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0)
+                        ),
+                        hintText: "Capacity of Clinic",
+                        fillColor: Colors.teal,
+                      ),
+                      keyboardType: TextInputType.number,
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    TextFormField(
+                      controller: waiting_controller,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0)
+                        ),
+                        hintText: "no of patients in the queue",
+                        fillColor: Colors.teal,
+                      ),
+                      keyboardType: TextInputType.number,
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    TextFormField(
+                      controller: wait_time_controller,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0)
+                        ),
+                        hintText: "Time for single patient",
+                        fillColor: Colors.teal,
+                      ),
+                      keyboardType: TextInputType.datetime,
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    RaisedButton(
+                      onPressed: () {
+                        dynamic active = active_controller.text;
+                        dynamic maxium = max_controller.text;
+                        dynamic waiting_list = waiting_controller.text;
+                        dynamic waiting_time = wait_time_controller.text;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  Dashboard(active, maxium, waiting_list,
+                                      waiting_time)),
+                        );
+//                    Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Update Dashboard',
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            letterSpacing: 0.5,
+                            fontFamily: "SourceSansPro"),
+                      ),
+                      color: Colors.yellowAccent,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0)),
+                    ),
+
+                  ],
+                ),
+              ),
+
+            ],
           ),
         ),
       ),
