@@ -129,6 +129,16 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  int active_patients = 12;
+  int max_patients = 15;
+
+  void UpdateText() {
+    setState(() {
+      active_patients = 17;
+      max_patients = 15;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -190,7 +200,7 @@ class _DashboardState extends State<Dashboard> {
                       ),
 //
                       Text(
-                        "Active_Patients / Max_patients",
+                        "$active_patients/$max_patients",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: "SourceSansPro",
@@ -227,6 +237,7 @@ class _DashboardState extends State<Dashboard> {
                 children: <Widget>[
                   RaisedButton(
                     onPressed: () {
+                      UpdateText();
                       //Navigator.pop(context);
 //                      Navigator.pushNamed(context, '/second');
                       // Navigate back to first screen when tapped.
@@ -265,6 +276,25 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 ],
               ),
+              RaisedButton(
+                onPressed: () {
+                  UpdateText();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => UpdateDashboard()),
+                  );
+                },
+                child: Text(
+                  'Update patients',
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      letterSpacing: 0.5,
+                      fontFamily: "SourceSansPro"),
+                ),
+                color: Colors.deepPurpleAccent,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0)),
+              ),
               SizedBox(
                 height: 20.0,
               ),
@@ -273,7 +303,6 @@ class _DashboardState extends State<Dashboard> {
                 margin: EdgeInsets.all(20.0),
                 child: Padding(
                   padding: EdgeInsets.all(20.0),
-
                   child: Text(
                     "Advertisement Zone",
                     style: TextStyle(
@@ -295,6 +324,79 @@ class _DashboardState extends State<Dashboard> {
   }
 }
 
+class UpdateDashboard extends StatefulWidget {
+  @override
+  _UpdateDashboardState createState() => _UpdateDashboardState();
+}
+
+class _UpdateDashboardState extends State<UpdateDashboard> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.lightBlueAccent,
+        body: SafeArea(
+          child: Card(
+            color: Colors.lightBlueAccent,
+//            margin:EdgeInsets.symmetric(vertical: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image(
+                  alignment: Alignment.center,
+                  image: AssetImage("images/doodle.png"),
+                ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.0)
+                    ),
+                    hintText: "Active no of Clients",
+                    fillColor: Colors.teal,
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.0)
+                    ),
+                    hintText: "Capacity of Clinic",
+                    fillColor: Colors.teal,
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+                SizedBox(
+                  height: 20.0,
+
+                ),
+                RaisedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Update Dashboard',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        letterSpacing: 0.5,
+                        fontFamily: "SourceSansPro"),
+                  ),
+                  color: Colors.yellowAccent,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0)),
+                ),
+
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 
 class SecondScreen extends StatelessWidget {
