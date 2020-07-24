@@ -12,7 +12,8 @@ void main() {
 //      // When navigating to the "/second" route, build the SecondScreen widget.
 //      '/second': (context) => FirstScreen(),
 //    },
-    home: Dashboard(),
+    home: Dashboard(0, 20),
+//    home: UpdateDashboard(),
   ));
 }
 
@@ -124,18 +125,30 @@ class FirstScreen extends StatelessWidget {
 }
 
 class Dashboard extends StatefulWidget {
+  final dynamic active;
+  final dynamic maxium;
+
+  Dashboard(this.active, this.maxium);
+
   @override
-  _DashboardState createState() => _DashboardState();
+  _DashboardState createState() => _DashboardState(active, maxium);
 }
 
 class _DashboardState extends State<Dashboard> {
+  dynamic active, maxium;
+
+  _DashboardState(this.active, this.maxium);
+
   int active_patients = 12;
   int max_patients = 15;
 
+//  final int active;
+
+
   void UpdateText() {
     setState(() {
-      active_patients = 17;
-      max_patients = 15;
+      active_patients = active;
+      max_patients = maxium;
     });
   }
 
@@ -198,9 +211,8 @@ class _DashboardState extends State<Dashboard> {
                       SizedBox(
                         height: 10.0,
                       ),
-//
                       Text(
-                        "$active_patients/$max_patients",
+                        "$active/$maxium",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: "SourceSansPro",
@@ -278,7 +290,7 @@ class _DashboardState extends State<Dashboard> {
               ),
               RaisedButton(
                 onPressed: () {
-                  UpdateText();
+//                  UpdateText();
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => UpdateDashboard()),
@@ -330,6 +342,10 @@ class UpdateDashboard extends StatefulWidget {
 }
 
 class _UpdateDashboardState extends State<UpdateDashboard> {
+
+  final active_controller = TextEditingController();
+  final max_controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -347,6 +363,7 @@ class _UpdateDashboardState extends State<UpdateDashboard> {
                   image: AssetImage("images/doodle.png"),
                 ),
                 TextFormField(
+                  controller: active_controller,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(25.0)
@@ -360,6 +377,7 @@ class _UpdateDashboardState extends State<UpdateDashboard> {
                   height: 20.0,
                 ),
                 TextFormField(
+                  controller: max_controller,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(25.0)
@@ -371,11 +389,17 @@ class _UpdateDashboardState extends State<UpdateDashboard> {
                 ),
                 SizedBox(
                   height: 20.0,
-
                 ),
                 RaisedButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    dynamic active = active_controller.text;
+                    dynamic maxium = max_controller.text;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Dashboard(active, maxium)),
+                    );
+//                    Navigator.pop(context);
                   },
                   child: Text(
                     'Update Dashboard',
