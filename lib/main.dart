@@ -361,7 +361,8 @@ class UpdateDashboard extends StatefulWidget {
 }
 
 class _UpdateDashboardState extends State<UpdateDashboard> {
-
+  final ref = FirebaseDatabase.instance.reference();
+  final name = "Name";
   final active_controller = TextEditingController();
   final max_controller = TextEditingController();
   final waiting_controller = TextEditingController();
@@ -369,16 +370,16 @@ class _UpdateDashboardState extends State<UpdateDashboard> {
 
   @override
   Widget build(BuildContext context) {
+//    final ref = fb.reference();
+    var retrievedName;
     return MaterialApp(
       home: Scaffold(
-
         backgroundColor: Colors.lightBlueAccent,
         body: SafeArea(
           child: ListView(
             children: <Widget>[
               Card(
                 color: Colors.lightBlueAccent,
-
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -444,6 +445,15 @@ class _UpdateDashboardState extends State<UpdateDashboard> {
                     ),
                     RaisedButton(
                       onPressed: () {
+                        ref.child("Clinical Data").set(
+                            {
+                              "active_patients": active_controller.text,
+                              "maximum_patients": max_controller.text,
+                              "waiting_list": waiting_controller.text,
+                              "waiting_time": wait_time_controller.text,
+                            }
+                        );
+
                         dynamic active = active_controller.text;
                         dynamic maxium = max_controller.text;
                         dynamic waiting_list = waiting_controller.text;
@@ -480,6 +490,8 @@ class _UpdateDashboardState extends State<UpdateDashboard> {
     );
   }
 }
+
+
 
 
 class SecondScreen extends StatelessWidget {
