@@ -180,7 +180,6 @@ class _DashboardState extends State<Dashboard> {
       maxium = cData[i].max_patients;
       wait_list = cData[i].waiting_list;
       wait_time = cData[i].waiting_time;
-//      print("active:$active maxium::$maxium waiting_list::: $wait_list wait_time:::: $wait_time");
     }
 
 //    print("$active::$maxium::$wait_list::$wait_time");
@@ -192,19 +191,6 @@ class _DashboardState extends State<Dashboard> {
           title: Text("First Screen"),
         ),
         body: Container(
-
-//          child: cData.length == 0 ? new Text('No Data'):
-//          new ListView.builder(
-//            itemCount: cData.length,
-//            itemBuilder: (_,index){
-//              return UI(
-//                cData[index].active_patients,
-//                cData[index].max_patients,
-//                cData[index].waiting_list,
-//                cData[index].waiting_list,);
-//            },
-//          ),
-
 
           child: Column(
             children: <Widget>[
@@ -418,21 +404,6 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
   }
-
-//  Widget UI(dynamic active_patients, dynamic max_patients, dynamic waiting_list, dynamic waiting_time){
-//    return new Card(
-//      child: new Container(
-//        child: new Column(
-//          children: <Widget>[
-//            new Text('active_patients:$active_patients'),
-//            new Text('maxPatients: $max_patients'),
-//            new Text('waitingList: $waiting_list'),
-//            new Text('waitingTime: $waiting_time'),
-//          ],
-//        ),
-//      ),
-//    );
-//  }
 }
 
 class UpdateDashboard extends StatefulWidget {
