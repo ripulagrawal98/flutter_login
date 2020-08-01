@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_login/clinicData.dart';
 import 'UpdateData.dart';
+import 'Switch_User_Admin.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -149,22 +150,22 @@ class _DashboardState extends State<Dashboard> {
 
   void initState() {
     DatabaseReference ref = FirebaseDatabase.instance.reference();
+
     ref.child("Clinical Data").once().then((DataSnapshot snap) {
       var keys = snap.value.keys;
-      var data = snap.value;
+      dynamic data = snap.value;
       cData.clear();
 //      print("ddatadata::$data");
+
       for (var key in keys) {
         clinicData d = new clinicData(
           data[key]['active_patients'],
           data[key]['max_patients'],
-          data[key]['waiting_list'],
-          data[key]['waiting_time'],
-
+//          data[key]['waiting_list'],
+//          data[key]['waiting_time'],
         );
-
         cData.add(d);
-        print("lengthlength: ${data}");
+        print("lengthlength: ${cData.length}");
       }
       setState(() {
         print('Length: ${cData.length}');
@@ -172,19 +173,15 @@ class _DashboardState extends State<Dashboard> {
       });
     });
   }
-
-
   @override
   Widget build(BuildContext context) {
+    print('Length: ${cData.length}');
     for (var i = 0; i < cData.length; i++) {
       active = cData[i].active_patients;
       maxium = cData[i].max_patients;
-      wait_list = cData[i].waiting_list;
-      wait_time = cData[i].waiting_time;
+//      wait_list = cData[i].waiting_list;
+//      wait_time = cData[i].waiting_time;
     }
-
-//    print("$active::$maxium::$wait_list::$wait_time");
-
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.tealAccent,
@@ -224,22 +221,6 @@ class _DashboardState extends State<Dashboard> {
                   borderRadius: BorderRadius.circular(200.0),
                 ),
               ),
-//                Card(
-//
-//                  child: cData.length == 0 ? new Text('No Data'):
-////                  new ListView.builder(
-////                    itemCount: cData.length,
-////                    itemBuilder: (_,index){
-////                    return UI(
-////                    cData[index].active_patients,
-////                  cData[index].max_patients,
-////                  cData[index].waiting_list,
-////                  cData[index].waiting_list,);
-////                  },
-////                  ),
-//                ),
-
-
               Card(
                 color: Colors.redAccent,
                 child: Padding(
@@ -273,7 +254,7 @@ class _DashboardState extends State<Dashboard> {
                         height: 10.0,
                       ),
                       Text(
-                        "Waiting : $wait_list",
+                        "Waiting ",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: "SourceSansPro",
@@ -286,7 +267,7 @@ class _DashboardState extends State<Dashboard> {
                         height: 10.0,
                       ),
                       Text(
-                        "Your turn in next $wait_time minutes",
+                        "Your turn in next minutes",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: "SourceSansPro",

@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_login/main.dart';
 
 extension ColorExtension on String {
@@ -20,11 +21,27 @@ class UpdateData extends StatefulWidget {
 }
 
 class _UpdateDataState extends State<UpdateData> {
-  final ref = FirebaseDatabase.instance.reference();
+  final active_controller = TextEditingController();
+  dynamic maximum;
 
-  int maximum = 15;
-  int active = 0;
-  Color c = const Color(0xFF42A5F5);
+  dynamic active = 0;
+  DatabaseReference ref = FirebaseDatabase.instance.reference();
+
+  void initState() {
+    DatabaseReference ref = FirebaseDatabase.instance.reference();
+    var l = ref.child("Clinical Data");
+    ref
+        .child("Clinical Data")
+        .child("maximum")
+        .once()
+        .then((DataSnapshot snap) {
+      //      var keys = snap.value;
+      int data = snap.value;
+      setState(() {
+        maximum = data;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +49,7 @@ class _UpdateDataState extends State<UpdateData> {
       home: Scaffold(
 //        backgroundColor: Colors.white,
         backgroundColor: "#F0EFE6".toColor(),
-//        appBar: AppBar(
-//          title: Text("UpdateScreen"),
-//        ),
+
         body: Container(
           padding: EdgeInsets.symmetric(vertical: 20.0),
           child: Column(
@@ -201,6 +216,7 @@ class _UpdateDataState extends State<UpdateData> {
               ),
               RaisedButton(
                 onPressed: () {
+                  uploadToFirebase();
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => new Dashboard()));
                 },
@@ -222,6 +238,15 @@ class _UpdateDataState extends State<UpdateData> {
           ),
         ),
       ),
+    );
+  }
+
+  void uploadToFirebase() {
+    ref.child("Clinical Data").push().set(
+        {
+          "active_patients": active,
+          "max_patients": maximum
+        }
     );
   }
 }
