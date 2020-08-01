@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_login/clinicData.dart';
+import 'UpdateData.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -353,12 +354,15 @@ class _DashboardState extends State<Dashboard> {
               RaisedButton(
                 onPressed: () {
 //                  UpdateText();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => UpdateDashboard()),
-                  );
+//                  Navigator.push(
+//                    context,
+//                    MaterialPageRoute(builder: (context) => UpdateDashboard()),
+//                  );
+//                },
+                  Navigator.push(context,
+                      MaterialPageRoute(
+                          builder: (context) => new UpdateData()));
                 },
-
                 child: Text(
                   'Update patients',
                   style: TextStyle(
@@ -406,145 +410,145 @@ class _DashboardState extends State<Dashboard> {
   }
 }
 
-class UpdateDashboard extends StatefulWidget {
-  @override
-  _UpdateDashboardState createState() => _UpdateDashboardState();
-}
+//class UpdateDashboard extends StatefulWidget {
+//  @override
+//  _UpdateDashboardState createState() => _UpdateDashboardState();
+//}
+//
+//class _UpdateDashboardState extends State<UpdateDashboard> {
+//  final ref = FirebaseDatabase.instance.reference();
+//  final name = "Name";
+//  final active_controller = TextEditingController();
+//  final max_controller = TextEditingController();
+//  final waiting_controller = TextEditingController();
+//  final wait_time_controller = TextEditingController();
+//
+//  @override
+//  Widget build(BuildContext context) {
 
-class _UpdateDashboardState extends State<UpdateDashboard> {
-  final ref = FirebaseDatabase.instance.reference();
-  final name = "Name";
-  final active_controller = TextEditingController();
-  final max_controller = TextEditingController();
-  final waiting_controller = TextEditingController();
-  final wait_time_controller = TextEditingController();
 
-  @override
-  Widget build(BuildContext context) {
-//    final ref = fb.reference();
-    var retrievedName;
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.lightBlueAccent,
-        body: SafeArea(
-          child: ListView(
-            children: <Widget>[
-              Card(
-                color: Colors.lightBlueAccent,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Image(
-                      alignment: Alignment.center,
-                      image: AssetImage("images/doodle.png"),
-                    ),
-                    TextFormField(
-                      controller: active_controller,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0)
-                        ),
-                        hintText: "Active no of Clients",
-                        fillColor: Colors.teal,
-                      ),
-                      keyboardType: TextInputType.number,
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    TextFormField(
-                      controller: max_controller,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0)
-                        ),
-                        hintText: "Capacity of Clinic",
-                        fillColor: Colors.teal,
-                      ),
-                      keyboardType: TextInputType.number,
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    TextFormField(
-                      controller: waiting_controller,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0)
-                        ),
-                        hintText: "no of patients in the queue",
-                        fillColor: Colors.teal,
-                      ),
-                      keyboardType: TextInputType.number,
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    TextFormField(
-                      controller: wait_time_controller,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0)
-                        ),
-                        hintText: "Time for single patient",
-                        fillColor: Colors.teal,
-                      ),
-                      keyboardType: TextInputType.datetime,
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    RaisedButton(
-                      onPressed: () {
-                        uploadToFirebase();
-                        dynamic active = active_controller.text;
-                        dynamic maxium = max_controller.text;
-                        dynamic waiting_list = waiting_controller.text;
-                        dynamic waiting_time = wait_time_controller.text;
-
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  Dashboard()),
-                        );
-                      },
-                      child: Text(
-                        'Update Dashboard',
-                        style: TextStyle(
-                            fontSize: 20.0,
-                            letterSpacing: 0.5,
-                            fontFamily: "SourceSansPro"),
-                      ),
-                      color: Colors.yellowAccent,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
-                    ),
-
-                  ],
-                ),
-              ),
-
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void uploadToFirebase() {
-    ref.child("Clinical Data").push().set(
-        {
-          "active_patients": active_controller.text,
-          "max_patients": max_controller.text,
-          "waiting_list": waiting_controller.text,
-          "waiting_time": wait_time_controller.text,
-        }
-    );
-  }
-
-}
-
+//    return MaterialApp(
+//      home: Scaffold(
+//        backgroundColor: Colors.lightBlueAccent,
+//        body: SafeArea(
+//          child: ListView(
+//            children: <Widget>[
+//              Card(
+//                color: Colors.lightBlueAccent,
+//                child: Column(
+//                  mainAxisAlignment: MainAxisAlignment.center,
+//                  children: <Widget>[
+//                    Image(
+//                      alignment: Alignment.center,
+//                      image: AssetImage("images/doodle.png"),
+//                    ),
+//                    TextFormField(
+//                      controller: active_controller,
+//                      decoration: InputDecoration(
+//                        border: OutlineInputBorder(
+//                            borderRadius: BorderRadius.circular(25.0)
+//                        ),
+//                        hintText: "Active no of Clients",
+//                        fillColor: Colors.teal,
+//                      ),
+//                      keyboardType: TextInputType.number,
+//                    ),
+//                    SizedBox(
+//                      height: 20.0,
+//                    ),
+//                    TextFormField(
+//                      controller: max_controller,
+//                      decoration: InputDecoration(
+//                        border: OutlineInputBorder(
+//                            borderRadius: BorderRadius.circular(25.0)
+//                        ),
+//                        hintText: "Capacity of Clinic",
+//                        fillColor: Colors.teal,
+//                      ),
+//                      keyboardType: TextInputType.number,
+//                    ),
+//                    SizedBox(
+//                      height: 20.0,
+//                    ),
+//                    TextFormField(
+//                      controller: waiting_controller,
+//                      decoration: InputDecoration(
+//                        border: OutlineInputBorder(
+//                            borderRadius: BorderRadius.circular(25.0)
+//                        ),
+//                        hintText: "no of patients in the queue",
+//                        fillColor: Colors.teal,
+//                      ),
+//                      keyboardType: TextInputType.number,
+//                    ),
+//                    SizedBox(
+//                      height: 20.0,
+//                    ),
+//                    TextFormField(
+//                      controller: wait_time_controller,
+//                      decoration: InputDecoration(
+//                        border: OutlineInputBorder(
+//                            borderRadius: BorderRadius.circular(25.0)
+//                        ),
+//                        hintText: "Time for single patient",
+//                        fillColor: Colors.teal,
+//                      ),
+//                      keyboardType: TextInputType.datetime,
+//                    ),
+//                    SizedBox(
+//                      height: 20.0,
+//                    ),
+//                    RaisedButton(
+//                      onPressed: () {
+//                        uploadToFirebase();
+//                        dynamic active = active_controller.text;
+//                        dynamic maxium = max_controller.text;
+//                        dynamic waiting_list = waiting_controller.text;
+//                        dynamic waiting_time = wait_time_controller.text;
+//
+//                        Navigator.push(
+//                          context,
+//                          MaterialPageRoute(
+//                              builder: (context) =>
+//                                  Dashboard()),
+//                        );
+//                      },
+//                      child: Text(
+//                        'Update Dashboard',
+//                        style: TextStyle(
+//                            fontSize: 20.0,
+//                            letterSpacing: 0.5,
+//                            fontFamily: "SourceSansPro"),
+//                      ),
+//                      color: Colors.yellowAccent,
+//                      shape: RoundedRectangleBorder(
+//                          borderRadius: BorderRadius.circular(30.0)),
+//                    ),
+//
+//                  ],
+//                ),
+//              ),
+//
+//            ],
+//          ),
+//        ),
+//      ),
+//    );
+//  }
+//
+//  void uploadToFirebase() {
+//    ref.child("Clinical Data").push().set(
+//        {
+//          "active_patients": active_controller.text,
+//          "max_patients": max_controller.text,
+//          "waiting_list": waiting_controller.text,
+//          "waiting_time": wait_time_controller.text,
+//        }
+//    );
+//  }
+//
+//}
+//
 
 //class SecondScreen extends StatelessWidget {
 //  @override
