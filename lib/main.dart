@@ -332,34 +332,35 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 ],
               ),
-              RaisedButton(
-                onPressed: () {
-//                  UpdateText();
-//                  Navigator.push(
-//                    context,
-//                    MaterialPageRoute(builder: (context) => UpdateDashboard()),
-//                  );
-//                },
-                  Navigator.push(context,
-                      MaterialPageRoute(
-                          builder: (context) => new UpdateData()));
-                },
-                child: Text(
-                  'Update patients',
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      letterSpacing: 0.5,
-                      fontFamily: "SourceSansPro"),
-                ),
 
-                color: Colors.deepPurpleAccent,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0)),
-              ),
+//              RaisedButton(
+//                onPressed: () {
+////                  UpdateText();
+////                  Navigator.push(
+////                    context,
+////                    MaterialPageRoute(builder: (context) => UpdateDashboard()),
+////                  );
+////                },
+//                  Navigator.push(context,
+//                      MaterialPageRoute(
+//                          builder: (context) => new UpdateData()));
+//                },
+//                child: Text(
+//                  'Update patients',
+//                  style: TextStyle(
+//                      fontSize: 20.0,
+//                      letterSpacing: 0.5,
+//                      fontFamily: "SourceSansPro"),
+//                ),
+//
+//                color: Colors.deepPurpleAccent,
+//                shape: RoundedRectangleBorder(
+//                    borderRadius: BorderRadius.circular(30.0)),
+//              ),
+
               SizedBox(
                 height: 20.0,
               ),
-
 
               Card(
                 color: Colors.white70,
