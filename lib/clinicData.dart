@@ -1,5 +1,5 @@
 class clinicData {
-  dynamic active_patients, max_patients;
+  dynamic active_patients, max_patients, time;
 
 //  dynamic waiting_list, waiting_time;
 

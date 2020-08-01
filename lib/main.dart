@@ -151,26 +151,23 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     DatabaseReference ref = FirebaseDatabase.instance.reference();
 
-    ref.child("Clinical Data").once().then((DataSnapshot snap) {
+    ref.child("Clinical Data").limitToLast(1).once().then((DataSnapshot snap) {
       var keys = snap.value.keys;
       dynamic data = snap.value;
       cData.clear();
-//      print("ddatadata::$data");
 
       for (var key in keys) {
         clinicData d = new clinicData(
           data[key]['active_patients'],
           data[key]['max_patients'],
+
 //          data[key]['waiting_list'],
 //          data[key]['waiting_time'],
         );
         cData.add(d);
         print("lengthlength: ${cData.length}");
       }
-      setState(() {
-        print('Length: ${cData.length}');
-        print("DATADATA: ${cData}");
-      });
+      setState(() {});
     });
   }
   @override

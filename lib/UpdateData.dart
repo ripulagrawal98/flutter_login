@@ -31,7 +31,6 @@ class _UpdateDataState extends State<UpdateData> {
     DatabaseReference ref = FirebaseDatabase.instance.reference();
     var l = ref.child("Clinical Data");
     ref
-        .child("Clinical Data")
         .child("maximum")
         .once()
         .then((DataSnapshot snap) {
@@ -217,6 +216,7 @@ class _UpdateDataState extends State<UpdateData> {
               RaisedButton(
                 onPressed: () {
                   uploadToFirebase();
+                  Navigator.pop(context);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => new Dashboard()));
                 },
@@ -244,9 +244,9 @@ class _UpdateDataState extends State<UpdateData> {
   void uploadToFirebase() {
     ref.child("Clinical Data").push().set(
         {
-          "active_patients": active,
-          "max_patients": maximum
-        }
-    );
+      "active_patients": active,
+      "max_patients": maximum,
+      "time": DateTime.now().millisecondsSinceEpoch,
+    });
   }
 }
