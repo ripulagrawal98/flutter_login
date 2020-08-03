@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_login/clinicData.dart';
-import 'UpdateData.dart';
-import 'Switch_User_Admin.dart';
+import 'package:flutter_login/UpdateData.dart';
+import 'package:flutter_login/Switch_User_Admin.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:flutter_login/facility.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -139,14 +141,16 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
 
 //  DatabaseReference ref = FirebaseDatabase.instance.reference();
-  dynamic active, wait_list, wait_time;
+
   dynamic maxium;
 
+  dynamic maximum, address, waiting_max, time, clinic_name;
+
   List<clinicData> cData = [];
+  List<facility> fData = [];
 
-
-//  _DashboardState(
-//      this.active, this.maxium, this.waiting_list, this.waiting_time);
+  dynamic active = 0;
+  dynamic wait_list = 0;
 
   void initState() {
     DatabaseReference ref = FirebaseDatabase.instance.reference();
@@ -160,38 +164,76 @@ class _DashboardState extends State<Dashboard> {
         clinicData d = new clinicData(
           data[key]['active_patients'],
           data[key]['max_patients'],
-
-//          data[key]['waiting_list'],
-//          data[key]['waiting_time'],
+          data[key]['waiting_list'],
+          data[key]['waiting_max'],
+          data[key]['time_patient'],
         );
         cData.add(d);
-        print("lengthlength: ${cData.length}");
       }
       setState(() {});
     });
+
+    ref.child("Facility").once().then((DataSnapshot snap) {
+//      dynamic data = snap.value;
+
+      var keys = snap.value.keys;
+      dynamic data = snap.value;
+      fData.clear();
+
+      for (var key in keys) {
+        facility f = new facility(data['Clinic_Name'], data['maximum'],
+            data['Address'], data['Time'], data['waiting_max']);
+
+        fData.add(f);
+      }
+
+      setState(() {
+//        maximum = data;
+        print("PEACOCK$data");
+      });
+    });
   }
+
   @override
   Widget build(BuildContext context) {
-    print('Length: ${cData.length}');
+    for (var i = 0; i < fData.length; i++) {
+      maximum = fData[i].maximum;
+      address = fData[i].Address;
+      time = fData[i].Time;
+      waiting_max = fData[i].waiting_max;
+      clinic_name = fData[i].Clinic_Name;
+    }
+
     for (var i = 0; i < cData.length; i++) {
       active = cData[i].active_patients;
       maxium = cData[i].max_patients;
-//      wait_list = cData[i].waiting_list;
-//      wait_time = cData[i].waiting_time;
+      time = cData[i].time_patient;
+      waiting_max = cData[i].waiting_max;
+      wait_list = cData[i].waiting_list;
     }
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.tealAccent,
-        appBar: AppBar(
-          title: Text("First Screen"),
-        ),
+        backgroundColor: Colors.white,
         body: Container(
-
+          padding: EdgeInsets.symmetric(vertical: 20.0),
           child: Column(
             children: <Widget>[
-              Card(
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(30.0)
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+//                      offset: const Offset(3.0,3.0),
+                        color: Colors.grey,
+                        blurRadius: 5.0,
+                        spreadRadius: 1.0,
+                      )
+                    ]
+                ),
                 margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 100.0),
-                color: Colors.lightBlue,
                 child: Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Row(
@@ -199,39 +241,68 @@ class _DashboardState extends State<Dashboard> {
                     children: <Widget>[
                       Icon(
                         Icons.local_hospital,
+                        color: Hexcolor("#00008B"),
                         size: 25.0,
                       ),
                       Text(
                         "Gardimeter",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontStyle: FontStyle.italic,
                           fontSize: 30.0,
-                          fontFamily: "Lobster",
-                          color: Colors.black,
+                          fontFamily: "Arial",
+                          fontWeight: FontWeight.bold,
+                          color: Hexcolor("#00008B"),
                         ),
                       ),
                     ],
                   ),
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(200.0),
-                ),
+//                shape: RoundedRectangleBorder(
+//                  borderRadius: BorderRadius.circular(200.0),
+//                ),
               ),
-              Card(
-                color: Colors.redAccent,
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(30.0)
+                    ),
+                    color: Colors.white,
+                    shape: BoxShape.rectangle,
+                    boxShadow: [
+                      BoxShadow(
+//                      offset: const Offset(3.0,3.0),
+                        color: Colors.grey,
+                        blurRadius: 5.0,
+                        spreadRadius: 1.0,
+                      )
+                    ]
+
+                ),
                 child: Padding(
                   padding: EdgeInsets.all(20.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "Agrawal's Clinic",
+                        "$clinic_name",
                         style: TextStyle(
-                          fontFamily: "SourceSansPro",
+                          fontFamily: "Arial",
                           fontSize: 25.0,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: Hexcolor("#00008B"),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Text(
+                        "$address",
+                        style: TextStyle(
+                          fontFamily: "Arial",
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.bold,
+                          color: Hexcolor("#00008B"),
                         ),
                       ),
                       SizedBox(
@@ -241,43 +312,42 @@ class _DashboardState extends State<Dashboard> {
                         "$active/$maxium",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontFamily: "SourceSansPro",
-                          fontSize: 35.0,
+                          fontFamily: "Arial",
+                          fontSize: 25.0,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: Hexcolor("#00008B"),
                         ),
                       ),
                       SizedBox(
                         height: 10.0,
                       ),
                       Text(
-                        "Waiting ",
+                        "Waiting List: $wait_list/$waiting_max ",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontFamily: "SourceSansPro",
+                          fontFamily: "Arial",
                           fontSize: 25.0,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                          color: Hexcolor("#00008B"),
                         ),
                       ),
                       SizedBox(
                         height: 10.0,
                       ),
                       Text(
-                        "Your turn in next minutes",
+                        "Next Turn: $time minutes",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontFamily: "SourceSansPro",
+                          fontFamily: "Arial",
                           fontSize: 25.0,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                          color: Hexcolor("#00008B"),
                         ),
                       )
                     ],
                   ),
                 ),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0)),
+
               ),
 
 
@@ -289,20 +359,17 @@ class _DashboardState extends State<Dashboard> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   RaisedButton(
-                    onPressed: () {
-//                      UpdateText();
-                      //Navigator.pop(context);
-//                      Navigator.pushNamed(context, '/second');
-                      // Navigate back to first screen when tapped.
-                    },
+                    elevation: 10.0,
+                    onPressed: () {},
                     child: Text(
                       'Take Token',
                       style: TextStyle(
-                          fontSize: 20.0,
+                          fontSize: 23.0,
                           letterSpacing: 0.5,
-                          fontFamily: "SourceSansPro"),
+                          fontFamily: "Arial",
+                          color: Hexcolor("#00008B")),
                     ),
-                    color: Colors.yellow,
+                    color: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0)),
                   ),
@@ -310,20 +377,17 @@ class _DashboardState extends State<Dashboard> {
                     width: 20.0,
                   ),
                   RaisedButton(
-                    onPressed: () {
-                      print("Pressed");
-//              Navigator.pop(context);
-//                      Navigator.pushNamed(context, '/second');
-                      // Navigate back to first screen when tapped.
-                    },
+                    elevation: 10.0,
+                    onPressed: () {},
                     child: Text(
                       'Book Appointment',
                       style: TextStyle(
-                          fontSize: 20.0,
+                          fontSize: 23.0,
                           letterSpacing: 0.5,
-                          fontFamily: "SourceSansPro"),
+                          fontFamily: "Arial",
+                          color: Hexcolor("#00008B")),
                     ),
-                    color: Colors.yellow,
+                    color: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0)),
                   ),
@@ -359,23 +423,36 @@ class _DashboardState extends State<Dashboard> {
                 height: 20.0,
               ),
 
-              Card(
-                color: Colors.white70,
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(30.0)
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+//                      offset: const Offset(3.0,3.0),
+                        color: Colors.grey,
+                        blurRadius: 5.0,
+                        spreadRadius: 1.0,
+                      )
+                    ]
+
+                ),
                 margin: EdgeInsets.all(20.0),
                 child: Padding(
                   padding: EdgeInsets.all(20.0),
                   child: Text(
                     "Advertisement Zone",
                     style: TextStyle(
-                      fontSize: 20.0,
-                      fontFamily: "Lexend Zetta",
+                      fontSize: 25.0,
+                      fontFamily: "Arial",
                       fontWeight: FontWeight.bold,
                       letterSpacing: 0.05,
+                      color: Hexcolor("#00008B"),
                     ),
                   ),
                 ),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0)),
               )
 
 

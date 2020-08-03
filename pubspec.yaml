@@ -11,6 +11,7 @@ environment:
 
 
 dependencies:
+  hexcolor: ^1.0.4
   flutter:
     sdk: flutter
   firebase_core: ^0.4.0+9
